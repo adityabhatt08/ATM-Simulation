@@ -107,7 +107,12 @@ void signup(){
         fgets(name,20,stdin);
         fixString(name);
         printf("Enter your account number(11 digits): ");
+        acn:
         scanf("%11s",account_no);
+        if(strlen(account_no)<11){
+            printf("Enter a valid account no.: ");
+            goto acn;
+        }
         printf("NOTE: Username should not contain spaces and more than 29 characters!\n");
         printf("Enter a username: ");
         scanf("%29s",username);
@@ -129,7 +134,12 @@ void signup(){
         fgets(name,20,stdin);
         fixString(name);
         printf("Enter your account number(11 digits): ");
+        ac:
         scanf("%11s",account_no);
+        if(strlen(account_no)<11){
+            printf("Enter a valid account number: ");
+            goto ac;
+        }
         for(int i=0; i<count; i++)
             if(strcmp(account_no,details[i].account_no)==0){
                 printf("Account already exists! Please go to login page.\n");
