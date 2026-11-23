@@ -188,7 +188,6 @@ int countUsers(){
     cou = fopen("count.txt","r");
     int count = 0;
     if(cou==NULL){
-        fclose(cou);
         return 0;
     }
     fscanf(cou,"%d",&count);
