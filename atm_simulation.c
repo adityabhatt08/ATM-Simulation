@@ -383,6 +383,7 @@ void delete(){
         fclose(nam);
         fclose(pass);
         fclose(user);
+        logout();
         return;
     }
     for(int i=0; i<=count; i++){
