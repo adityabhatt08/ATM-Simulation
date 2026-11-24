@@ -28,9 +28,11 @@ void deposit();
 void withdraw();
 void logout();
 void delete();
+void clearTerminal();
 
 int main(){
     welcome();
+    clearTerminal();
     printf("Exiting...");
     return 0;
 }
@@ -46,8 +48,12 @@ void welcome(){
     if(input!=1)
         return;
     switch(option){
-        case 1: login(); break;
-        case 2: signup(); break;
+        case 1: 
+        clearTerminal();
+        login(); break;
+        case 2: 
+        clearTerminal();
+        signup(); break;
         case 3: return;
         default: printf("Invalid input! Please try again: "); goto enter;
     }
@@ -72,6 +78,7 @@ void login(){
             break;
         }
         else if(i==count-1){
+            clearTerminal();
             printf("Username not found!\n");
             redirect(welcome);
             return;
@@ -81,13 +88,13 @@ void login(){
     char password[9];
     scanf("%8s",password);
     if(strcmp(password,details[userIndex].password)==0){
-        printf("\033[2J\033[H");
-        fflush(stdout);
+        clearTerminal();
         printf("Login Successful!\n");
         currentUser = details[userIndex];
         dashboard();
     }
     else{
+        clearTerminal();
         printf("Wrong Password!\n");
         userIndex = -1;
         redirect(welcome);
@@ -142,6 +149,7 @@ void signup(){
         }
         for(int i=0; i<count; i++)
             if(strcmp(account_no,details[i].account_no)==0){
+                clearTerminal();
                 printf("Account already exists! Please go to login page.\n");
                 redirect(welcome);
                 return;
@@ -187,8 +195,7 @@ void signup(){
     count++;
     fprintf(cou,"%d",count);
     fclose(cou);
-    printf("\033[2J\033[H");
-    fflush(stdout);
+    clearTerminal();
     printf("Account created successfully. You can now login with your credentials.\n");
     redirect(welcome);
 }
@@ -261,18 +268,20 @@ void dashboardOptions(){
         case 1: checkBalance(); break;
         case 2: deposit(); break;
         case 3: withdraw(); break;
-        case 4: logout(); break;
+        case 4: clearTerminal(); logout(); break;
         case 5: delete(); break;
         default: printf("Invalid input. Try again!\n"); dashboardOptions();
     }
 }
 
 void checkBalance(){
+    clearTerminal();
     printf("Your Balance is: %.2f\n",currentUser.balance);
     redirect(dashboardOptions);
 }
 
 void deposit(){
+    clearTerminal();
     printf("Enter the amount to deposit: ");
     float amount = 0;
     scanf("%f",&amount);
@@ -297,6 +306,7 @@ void deposit(){
     char ac_no[12];
     strcpy(ac_no,currentUser.account_no);
     ac_no[4] = '\0';
+    clearTerminal();
     printf("TRANSACTION ALERT : DEPOSIT SUCCESSFUL\n");
     printf("Account No : %sXXXXXXX\n",ac_no);
     printf("Amount : Rs. %.2f\n",amount);
@@ -305,6 +315,7 @@ void deposit(){
 }
 
 void withdraw(){
+    clearTerminal();
     printf("Enter the amount to withdraw: ");
     float amount = 0;
     scanf("%f",&amount);
@@ -334,6 +345,7 @@ void withdraw(){
     char ac_no[12];
     strcpy(ac_no,currentUser.account_no);
     ac_no[4] = '\0';
+    clearTerminal();
     printf("TRANSACTION ALERT : WITHDRAWAL SUCCESSFUL\n");
     printf("Account No : %sXXXXXXX\n",ac_no);
     printf("Amount : Rs. %.2f\n",amount);
@@ -352,15 +364,22 @@ void logout(){
 }
 
 void delete(){
+    clearTerminal();
     printf("Are you sure you want to delete your account?:\n");
     printf("1. Yes\n2. No\n");
     int option = 0;
     int input = scanf("%d",&option);
-    if(input!=1)
+    if(input!=1){
+        clearTerminal();
         return;
+    }
     switch(option){
-        case 1: printf("This account will be deleted.\n"); break;
-        case 2: dashboardOptions(); return;
+        case 1: 
+        clearTerminal();
+        printf("This account will be deleted.\n"); break;
+        case 2: 
+        clearTerminal();
+        dashboardOptions(); return;
         default: printf("Invalid input!\n"); delete(); return;
     }
     int count = countUsers();
@@ -401,4 +420,9 @@ void delete(){
     fclose(pass);
     fclose(user);
     logout();
+}
+
+void clearTerminal(){
+    printf("\033[2J\033[H");
+    fflush(stdout);
 }
